@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Ekspedisi;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -14,6 +15,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use frontend\models\EkspedisiSearch;
+use yii\data\ActiveDataProvider;
 
 /**
  * Site controller
@@ -254,6 +257,25 @@ class SiteController extends Controller
         }
 
         return $this->render('resendVerificationEmail', [
+            'model' => $model
+        ]);
+    }
+
+    public function actionEkspedisi()
+    {
+        $model = new EkspedisiSearch();
+
+        if($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $dataProvider = new ActiveDataProvider([
+                'query' => Ekspedisi::find()->where(['kota' => $model->kota, 'berat' => $model->berat])
+            ]);
+
+            return $this->render('view', [
+                'model' => $model,
+                'dataProvider' => $dataProvider
+            ]);
+        }
+        return $this->render('ekspedisi', [
             'model' => $model
         ]);
     }

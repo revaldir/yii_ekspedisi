@@ -1,27 +1,22 @@
 <?php
 
 use yii\grid\GridView;
-use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
-$this->title = 'Reapz Ekspedisi';
+$this->title = 'Ekspedisi';
 ?>
 
 <div class="row">
-    <div class="col-md-10">
-        <div class="row">
-            <h3>Reapz Ekspedisi</h3>
-            <p>
-                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Create New', ['create'], ['class' => 'btn btn-info']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-import"></span> Import', ['import'], ['class' => 'btn btn-info']) ?>
-            </p>
-        </div>
-
-
+    <?php $form = ActiveForm::begin(); ?>
+    <div class="col-md-4">
+        <?= $form->field($model, 'kota')->textInput() ?>
+        <?= $form->field($model, 'berat')->textInput() ?>
+    </div>
+    <?php ActiveForm::end(); ?>
+    <div class="col-md-8">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                
                 'kota',
                 [
                     'attribute' => 'service_code',
@@ -29,20 +24,13 @@ $this->title = 'Reapz Ekspedisi';
                         return $model->getServiceLabels()[$model->service_code];
                     }
                 ],
-                'berat',
                 [
                     'attribute' => 'harga',
                     'content' => function($model) {
                         return 'Rp '.number_format($model->harga, 0, ',', '.');
                     }
-                ],
-
-                ['class' => 'yii\grid\ActionColumn']
+                ]
             ]
         ]) ?>
-
-    </div>
-    <div class="col-md-2">
-    
     </div>
 </div>
