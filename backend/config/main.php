@@ -46,6 +46,9 @@ return [
         ],
         'assetManager' => [
             'appendTimestamp' => true
+        ],
+        'exportComponent' => [
+            'class' => 'backend\components\ExportComponent'
         ]
     ],
     'params' => $params,

@@ -13,6 +13,8 @@ $this->title = 'Reapz Ekspedisi';
             <p>
                 <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Create New', ['create'], ['class' => 'btn btn-info']) ?>
                 <?= Html::a('<span class="glyphicon glyphicon-import"></span> Import', ['import'], ['class' => 'btn btn-info']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Export Excel', ['export-excel'], ['class' => 'btn btn-info']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Export PDF', ['export-pdf'], ['class' => 'btn btn-info']) ?>
             </p>
         </div>
 

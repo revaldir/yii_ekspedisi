@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Import Data from Excel';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h3><?= $this->title ?></h3>

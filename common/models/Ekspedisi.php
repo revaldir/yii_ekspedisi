@@ -9,9 +9,6 @@ class Ekspedisi extends ActiveRecord
 {
     // attribute for importFile
     public $importFile;
-    // const for scenarios, untuk memilah skenario untuk apa (insert, update)
-    // const SCENARIO_IMPORT = 'import';
-
 
     // const for services
     const SERVICE_REGULAR = 1;
@@ -24,20 +21,12 @@ class Ekspedisi extends ActiveRecord
         return '{{%ekspedisi}}';
     }
 
-    // public function scenarios()
-    // {
-    //     return [
-    //         self::SCENARIO_IMPORT => ['importFile']
-    //     ];
-    // }
-
     public function rules()
     {
         return [
             [['kota', 'service_code', 'berat', 'harga'], 'required'],
             [['harga', 'service_code', 'berat'], 'integer'],
             /** Import Data */
-            // ['importFile', 'required', 'on' => self::SCENARIO_IMPORT],
             ['importFile', 'file', 'extensions' => ['xls', 'xlsx']]
         ];
     }

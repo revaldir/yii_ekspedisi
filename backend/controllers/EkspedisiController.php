@@ -9,11 +9,48 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
+use yii\helpers\ArrayHelper;
 
 class EkspedisiController extends Controller
 {
+    public $styleArray = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ]
+            ],
+        ];
+
+    public $headerStyle = [
+        'font' => [
+            'bold' => true,
+            'color' => [
+                'rgb' => 'FFFFFF'
+            ]
+        ],
+        'borders' => [
+            'allBorders' => [
+                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            ]
+        ],
+        'fill' => [
+            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+            'startColor' => [
+                'rgb' => '538ED5'
+            ],
+        ]
+    ];
+
     public function behaviors()
     {
         return [
@@ -38,7 +75,8 @@ class EkspedisiController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Ekspedisi::find()
+            'query' => Ekspedisi::find(),
+            'pagination' => ['pageSize' => 10]
         ]);
         return $this->render('index', [
             'dataProvider' => $dataProvider
@@ -49,7 +87,14 @@ class EkspedisiController extends Controller
     {
         $model = new Ekspedisi();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if(Ekspedisi::find()->where(['kota' => $model->kota, 'berat' => $model->berat, 'service_code' => $model->service_code])->all()){
+                // echo 'Data Exists!';
+                // return $this->redirect('create', 400);
+                throw new BadRequestHttpException('Data Already Exists!');
+            }
+            // var_dump($model->kota); die();
+            $model->save();
             return $this->redirect('index');
         }
         return $this->render('create', [
@@ -139,6 +184,20 @@ class EkspedisiController extends Controller
         return $this->render('import', [
             'model' => $model
         ]);
+    }
+
+    public function actionExportExcel()
+    {
+        $fileName = 'DATA_EKSPEDISI_' . date("dmy") . '.xlsx';
+
+        Yii::$app->exportComponent->exportFile($fileName, 'XLSX');
+    }
+
+    public function actionExportPdf()
+    {
+        $fileName = 'DATA_EKSPEDISI_' . date("dmy") . '.pdf';
+
+        Yii::$app->exportComponent->exportFile($fileName, 'PDF');
     }
 
     protected function findModel($id)

@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Update #' . $model->id;
+$this->title = 'Edit #' . $model->id;
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="container">

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 $this->title = 'Details of #' . $model->id;
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="row">
@@ -22,8 +23,13 @@ $this->title = 'Details of #' . $model->id;
 
         <?= DetailView::widget([
             'model' => $model,
+            'options' => ['class' => 'table table-hover'],
             'attributes' => [
-                'id', 'kota', 
+                [
+                    'label' => '#',
+                    'value' => $model->id
+                ], 
+                'kota', 
                 [
                     'label' => 'Service',
                     'value' => function($model) {

@@ -5,7 +5,9 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use common\models\LoginForm;
+use common\models\Ekspedisi;
 
 /**
  * Site controller
@@ -22,7 +24,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'hello'],
                         'allow' => true,
                     ],
                     [

@@ -4,6 +4,7 @@ use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Ekspedisi';
+$this->params['breadcrumbs'][]= $this->title;
 ?>
 
 <div class="row">
@@ -15,9 +16,9 @@ $this->title = 'Ekspedisi';
     <?php ActiveForm::end(); ?>
     <div class="col-md-8">
         <?= GridView::widget([
+            'tableOptions' => ['class' => 'table table-bordered table-hover'],
             'dataProvider' => $dataProvider,
             'columns' => [
-                'kota',
                 [
                     'attribute' => 'service_code',
                     'content' => function($model) {

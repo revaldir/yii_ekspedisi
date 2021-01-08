@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 $this->title = 'Eskpedisi';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php $form = ActiveForm::begin(); ?>
@@ -16,7 +17,7 @@ $this->title = 'Eskpedisi';
     <div class="col-md-8">
     </div>
 </div>
-<?php echo Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
+<?php echo Html::submitButton('Search', ['class' => 'btn btn-success']) ?>
 <?php ActiveForm::end(); ?>
 
 
