@@ -11,46 +11,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
 use yii\web\UploadedFile;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
-use yii\helpers\ArrayHelper;
 
 class EkspedisiController extends Controller
 {
-    public $styleArray = [
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-            ],
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                ]
-            ],
-        ];
-
-    public $headerStyle = [
-        'font' => [
-            'bold' => true,
-            'color' => [
-                'rgb' => 'FFFFFF'
-            ]
-        ],
-        'borders' => [
-            'allBorders' => [
-                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-            ]
-        ],
-        'fill' => [
-            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-            'startColor' => [
-                'rgb' => '538ED5'
-            ],
-        ]
-    ];
-
     public function behaviors()
     {
         return [
@@ -93,7 +56,6 @@ class EkspedisiController extends Controller
                 // return $this->redirect('create', 400);
                 throw new BadRequestHttpException('Data Already Exists!');
             }
-            // var_dump($model->kota); die();
             $model->save();
             return $this->redirect('index');
         }
@@ -132,7 +94,6 @@ class EkspedisiController extends Controller
     public function actionImport()
     {
         $model = new Ekspedisi();
-        // $model->scenario = Ekspedisi::SCENARIO_IMPORT;
 
         if ($model->load(Yii::$app->request->post())) {
             $model->importFile = UploadedFile::getInstance($model, 'importFile');
@@ -177,7 +138,6 @@ class EkspedisiController extends Controller
                     }
                 }
             }
-
             return $this->redirect(['index']);
         }
 

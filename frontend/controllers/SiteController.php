@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Destination;
 use common\models\Ekspedisi;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
@@ -16,6 +17,9 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\models\EkspedisiSearch;
+use common\models\Location;
+use common\models\Price;
+use common\models\Transaction;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -263,20 +267,43 @@ class SiteController extends Controller
 
     public function actionEkspedisi()
     {
-        $model = new EkspedisiSearch();
+        $location = new Location;
+        $destination = new Destination;
+        // $price = new Price;
 
-        if($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $dataProvider = new ActiveDataProvider([
-                'query' => Ekspedisi::find()->where(['kota' => $model->kota, 'berat' => $model->berat])
-            ]);
+        if(Yii::$app->request->post()) {
+            $req = Yii::$app->request->post();
+            $weight = $req['Berat'];
+
+            $idPrice = null;
+
+            $dataPrice = Price::find([
+                    ['min', '<=', $weight],
+                    ['max', '>=', $weight]
+            ])->one();
+
+            $idPrice = $dataPrice->id;
+
+            $trans = Transaction::find()->where(['loc_id' => $req['Location']['kota'], 'dest_id' => $req['Destination']['kota'], 'price_id' => $idPrice])->one();
+
+            // if ($trans) {
+            //     $price = $dataPrice->price;
+            // } else {
+            //     $price = 0;
+            // }
+
+            $price = ($trans) ? $dataPrice->price : 0;
+
+            // var_dump($trans); die();
 
             return $this->render('view', [
-                'model' => $model,
-                'dataProvider' => $dataProvider
+                'location' => $location,
+                'price' => $price
             ]);
         }
         return $this->render('ekspedisi', [
-            'model' => $model
+            'location' => $location,
+            'destination' => $destination,
         ]);
     }
 }

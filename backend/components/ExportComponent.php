@@ -8,7 +8,6 @@ use yii\helpers\ArrayHelper;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-
 class ExportComponent extends Component
 {
     public $captionStyle = [
